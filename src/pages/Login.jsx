@@ -2,15 +2,14 @@ import { Component } from 'react';
 import { requestLogin } from '../helpers/loginAPI';
 
 export default class Login extends Component {
-  
+
   state = {
     email: '',
     password: '',
     shouldShowEmailWarning: false,
     shouldShowPasswordWarning: false,
     isLoading: false,
-    requestReturnedWrongPassword: false,
-    returnedNoResults: true
+    requestReturnedWrongPassword: false
   }
 
   handleChange = (event) => {
@@ -21,9 +20,12 @@ export default class Login extends Component {
     event.preventDefault();
 
     this.setState(({ email, password }) => {
+      const showEmailWarning = !(email.includes('@') && email.toLowerCase().includes(".com"));
+      const showPasswordWarning = !(password.length >= 8);
+
       return {
-        shouldShowEmailWarning: !(email.includes('@') && email.toLowerCase().includes(".com")),
-        shouldShowPasswordWarning: !(password.length >= 8)
+        shouldShowEmailWarning: showEmailWarning,
+        shouldShowPasswordWarning: showPasswordWarning
       }
     }, this.requestLoginIfPossible);
   }
@@ -94,7 +96,9 @@ export default class Login extends Component {
             <span className="icon is-small is-left">
               <i className="fas fa-envelope"></i>
             </span>
-            { shouldShowEmailWarning && <p className="help is-danger">Email deve estar no formato correto</p> }
+            { shouldShowEmailWarning && 
+              <p className="help is-danger">Email deve estar no formato correto</p> 
+            }
           </div>
 
           <div className='field control has-icons-left'>
@@ -109,7 +113,9 @@ export default class Login extends Component {
             <span className="icon is-small is-left">
               <i className="fas fa-lock"></i>
             </span>
-            { shouldShowPasswordWarning && <p className="help is-danger">Senha deve conter mais de 8 caracteres</p> }
+            { shouldShowPasswordWarning && 
+              <p className="help is-danger">Senha deve conter mais de 8 caracteres</p> 
+            }
           </div>
 
           <div className="field is-grouped is-grouped-right">

@@ -1,9 +1,13 @@
+const SUCCESS_STATUS_CODE = 200;
+const UNATHORIZED_STATUS_CODE = 401;
+const WRONG_PASSWORD_MOCK = "11111111";
+
 export const requestLogin = async (email, password) => {
   return {
-    statusCode: password === "11111111" ? 401 : 200,
+    statusCode: password === WRONG_PASSWORD_MOCK ? UNATHORIZED_STATUS_CODE : SUCCESS_STATUS_CODE,
     json: () => {
       return new Promise((resolve) => {
-        setTimeout(async () => {
+        setTimeout(() => {
           resolve({
             email,
             isAdmin: email.includes(".admin")
@@ -13,3 +17,11 @@ export const requestLogin = async (email, password) => {
     }
   }
 }
+
+// {
+//   statusCode: 200
+//   json: {
+//     email: "",
+//     isAdmin: false
+//   }
+// }
